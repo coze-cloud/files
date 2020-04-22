@@ -10,7 +10,7 @@ ENV FTP_PASS changeme
 ENV FTP_PORT 21
 ENV FTP_PORTRANGE_LOW 21000
 ENV FTP_PORTRANGE_HIGH 21001
-ENV FTP_READY="Cozy file server is serving your files."
+ENV FTP_READY="The barebones file server is serving your files."
 
 ADD bin/* /bin/
 
