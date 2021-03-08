@@ -4,7 +4,7 @@ NOT be left exposed to the internet any longer than ABSOLUTELY needed.
 The file server should only be used to up-/download data to/from volumes.
 
 Configuration should NOT be done here!
-Use the provided vault that comes with each deployment insted.
+Use the provided vault that comes with each deployment instead.
 
 The /mounts directory contains the specific mount-points of your deployments.
 
