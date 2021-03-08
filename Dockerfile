@@ -1,22 +1,25 @@
-FROM python:slim
+FROM ubuntu:latest
 
 LABEL maintainer="Cozy <cozy@oechsler.it>"
-LABEL usage="Barebones FTP server for file management"
-LABEL copyright="Copyright 2020 Cozy Hosting - All rights reserved"
+LABEL usage="Barebones SFTP server for file management"
+LABEL copyright="Copyright 2021 Cozy Hosting - All rights reserved"
 
-ENV FTP_ROOT /home/files
-ENV FTP_USER files
-ENV FTP_PASS changeme
-ENV FTP_PORT 21
-ENV FTP_PORTRANGE_LOW 21000
-ENV FTP_PORTRANGE_HIGH 21001
-ENV FTP_READY="The barebones file server is serving your files."
+RUN apt-get update && apt-get install -y \
+  openssh-server \
+  mcrypt \
+  && mkdir /var/run/sshd \
+  && chmod 0755 /var/run/sshd \
+  && mkdir -p /data/mounts \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && mkdir /ssh/
 
-ADD bin/* /bin/
+ADD start.sh /usr/local/bin/start.sh
+ADD sshd_config /etc/ssh/sshd_config
 
-RUN pip install pyopenssl pyftpdlib && \
-    mkdir -pv $FTP_ROOT
+ADD README.txt /data/README.txt
 
-EXPOSE $FTP_PORT
+VOLUME /data/mounts
+EXPOSE 22
 
-ENTRYPOINT /bin/simple-ftp-server
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/start.sh"]
